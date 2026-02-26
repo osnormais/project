@@ -1,0 +1,32 @@
+@startuml os-normais-macro-drive
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title "Arquitetura Macro - Drive"
+
+Person(user, "Usuário")
+
+System(user_api, "user-api")
+SystemDb(user_db, "user-db")
+Rel(user_api, user_db, "reads/writes", "JDBC")
+
+System(drive_frontend, "drive-website")
+
+System(drive_api, "drive-api")
+SystemDb(drive_db, "drive-db")
+Rel(drive_api, drive_db, "reads/writes", "JDBC")
+
+System(storage_api, "storage-api")
+SystemDb(storage_db, "Storage")
+Rel(storage_api, storage_db, "reads/writes", "File System")
+
+BiRel(user, drive_frontend, "Acessa")
+
+Rel(drive_frontend, user_api, "consome", "http")
+Rel(drive_frontend, drive_api, "consome", "http")
+Rel(drive_frontend, storage_api, "consome", "http/stream")
+
+
+@enduml
